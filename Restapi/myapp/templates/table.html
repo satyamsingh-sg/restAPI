@@ -1,0 +1,146 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head>
+        <!-- Basic -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Site Metas -->
+        <link rel="icon" href="images/fevicon.png" type="image/gif" />
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content=""
+        <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>    
+ <style>
+  .top{
+      padding :50px;
+      background-color:black;
+      color:white;
+  }
+  h1{
+      text-item:center;
+  }
+  
+  #customers {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers tr:hover {background-color: #ddd;}
+  
+  #customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+  }
+  .user{
+      margin-top:20px;
+      padding:30px;
+  }
+  .top a{
+    text-decoration:none;
+    margin:30px;
+    padding: 5px;
+    background:red;
+    margin-top:40px;
+    border: 2px solid red;
+    border-radius: 25px;
+   color:white;
+  }
+  .form{
+      margin-left:400px;
+  }
+ </style>
+ <script>
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10)
+            seconds = parseInt(timer % 60, 10);
+    
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+            display.textContent = minutes + ":" + seconds;
+    
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+    
+    window.onload = function () {
+        var fiveMinutes = 10,
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+    };
+ </script>
+<body>
+    <div class="top">
+        <center><h1 class>Home Page</h1>
+            <div>Registration closes in <span id="time">05:00</span> minutes!</div>
+           
+        {% if user.is_authenticated %}
+       <h3> <a href="{% url "log_out" %}">logout</a></h3>
+        {% else %}
+       <h3> <a href={% url "display" %}>login</a></h3>
+       
+        <h3><a href="{% url "sign" %}">sign</a></h3>
+        {% endif %}
+        </center>
+        </div>
+        <div class="user"><center><h2>User data</h2></center></div>
+<table id="customers">
+    <tr>
+        <th>Username</th>
+        <th>Email </th>
+        <th>first Name</th>
+        <th>Last Name </th>
+        <th>Address </th>
+      </tr>
+
+{% if users %}
+{% for user in users %}
+<tr>
+    <td>{{user.username}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.first_name}}</td>
+    <td>{{user.last_name}}</td>
+    <td>{{user.address.adress}}</td>
+    
+    <td>
+        <form action="/delete/{{user.id}}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="pro_id"  value={{user.id}} >
+    <button type="submit" style="background-color:red;margin-left:20px;  text-decoration: none;  padding:10px;border-radius:10px; ">Delete</button>
+</form>
+    </td>
+</tr>
+ {%  endfor %}
+
+ {% endif %}
+ 
+</table>
+
+
+</body> 
+</html> 
